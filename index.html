@@ -1,0 +1,1328 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WASHDEMO</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="WASHDEMO – professionele reiniging van opritten, terrassen en gevels.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one directed take — concrete wall hero with a live jet that cleans the brand → pinned top-down driveway clean → asymmetric editorial services → volt wash-out finale */
+:root{
+  --ink:#0b0d0c;
+  --char:#151816;
+  --steel:#242826;
+  --line:rgba(236,239,231,.14);
+  --fog:#a3a9a2;
+  --paper:#eceee6;
+  --volt:#cdf52a;
+  --f-display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --f-body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --gx:clamp(16px,4.2vw,64px);
+  --pl:max(var(--gx),env(safe-area-inset-left,0px));
+  --pr:max(var(--gx),env(safe-area-inset-right,0px));
+  --ease:cubic-bezier(.2,.7,.1,1);
+  color-scheme:dark;
+}
+html,body{overflow-x:clip}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--volt);color:var(--ink)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--volt);outline-offset:3px}
+h1,h2,h3{text-wrap:balance}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-top:calc(env(safe-area-inset-top,0px) + 14px);padding-bottom:14px;padding-left:var(--pl);padding-right:var(--pr);
+  transition:background-color .45s,color .45s}
+.nav.is-scrolled{background:rgba(11,13,12,.74);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2)}
+.nav.on-volt{background:transparent;color:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none}
+.logo{display:inline-flex;align-items:center;gap:.16em;font:900 26px/1 var(--f-display);letter-spacing:.03em;text-decoration:none;text-transform:uppercase;white-space:nowrap}
+.logo .jet{display:block;width:.62em;height:3px;background:var(--volt);transform:rotate(-26deg);box-shadow:0 0 12px rgba(205,245,42,.55)}
+.nav.on-volt .logo .jet{background:var(--ink);box-shadow:none}
+.nav-links{display:flex;align-items:center;gap:clamp(12px,2.4vw,34px)}
+.nav-links .txt{font:600 12.5px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;opacity:.86;transition:color .25s,opacity .25s}
+.nav-links .txt:hover{opacity:1;color:var(--volt)}
+.nav.on-volt .nav-links .txt:hover{color:var(--ink);opacity:.6}
+.nav-wa{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;font:700 12px/1 var(--f-body);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);background:var(--volt);transition:background-color .25s,color .25s}
+.nav-wa:hover{background:var(--paper)}
+.nav.on-volt .nav-wa{background:var(--ink);color:var(--volt)}
+.nav-wa svg{width:16px;height:16px}
+
+/* ---------- BUTTONS ---------- */
+.btn{--bg:var(--volt);--fg:var(--ink);position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 26px;
+  font:700 14px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;background:var(--bg);color:var(--fg);
+  overflow:hidden;isolation:isolate;transition:background-color .35s var(--ease),color .35s var(--ease),box-shadow .35s var(--ease);will-change:transform}
+.btn-in{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px}
+.btn svg{width:18px;height:18px;flex:none}
+.btn::after{content:"";position:absolute;top:-30%;bottom:-30%;left:0;width:34%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9) 50%,transparent);transform:translateX(-140%) skewX(-24deg);z-index:0;pointer-events:none}
+.btn:hover::after,.btn:focus-visible::after{transform:translateX(420%) skewX(-24deg);transition:transform .8s var(--ease)}
+.btn-ghost{--bg:transparent;--fg:var(--paper);box-shadow:inset 0 0 0 1.5px rgba(236,239,231,.6)}
+.btn-ghost::after{background:linear-gradient(90deg,transparent,rgba(205,245,42,.55) 50%,transparent)}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--paper);background:rgba(236,239,231,.08)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;height:100vh;height:100svh;min-height:600px;overflow:hidden;background:#1a1c1a}
+.hero-stage{position:absolute;inset:-12px;will-change:transform}
+.hero-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#heroBg{z-index:0}
+.hero-vignette{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(120% 95% at 42% 28%,transparent 38%,rgba(5,6,5,.72) 100%),
+             linear-gradient(180deg,rgba(5,6,5,.6) 0%,transparent 16%,transparent 48%,rgba(5,6,5,.86) 100%)}
+#heroFx{z-index:2;pointer-events:none}
+.gun{position:absolute;left:0;top:0;width:1500px;height:900px;transform-origin:0 0;z-index:3;pointer-events:none;will-change:transform;transform:translate3d(-3000px,0,0)}
+.gun svg{display:block;width:100%;height:100%;overflow:visible}
+.hud{position:absolute;z-index:4;top:calc(env(safe-area-inset-top,0px) + 92px);right:var(--pr);display:grid;gap:6px;justify-items:end;
+  font:500 11px/1.2 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(236,239,231,.66);pointer-events:none}
+.hud-v{display:flex;align-items:baseline;gap:6px;color:var(--paper)}
+.hud-v b{font:500 30px/1 var(--f-mono);letter-spacing:0;font-variant-numeric:tabular-nums}
+.hud-meter{position:relative;width:150px;height:2px;background:rgba(236,239,231,.18);overflow:hidden}
+.hud-meter i{position:absolute;inset:0;background:var(--volt);transform-origin:0 50%;transform:scaleX(0)}
+.hero-copy{position:absolute;z-index:4;left:0;right:0;bottom:0;padding-left:var(--pl);padding-right:var(--pr);padding-bottom:clamp(28px,6.5vh,76px);pointer-events:none}
+.hero-copy-in{max-width:min(980px,72vw)}
+.hero h1{margin:0;font:900 clamp(52px,min(9vw,13.5vh),170px)/.84 var(--f-display);text-transform:uppercase;letter-spacing:-.004em;text-shadow:0 6px 48px rgba(0,0,0,.55)}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.05em;margin-bottom:-.05em}
+.hero h1 .ln>span{display:block}
+.hero h1 .ln:nth-child(2){color:var(--volt)}
+.hero .sub{margin:20px 0 0;max-width:36ch;font-size:clamp(16px,1.3vw,19px);line-height:1.45;color:rgba(236,239,231,.84);text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.hero .cta-row{margin-top:26px;pointer-events:auto}
+
+/* ---------- SHARED ---------- */
+.eyebrow{display:flex;align-items:center;gap:12px;margin:0;font:500 12px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--volt)}
+.eyebrow::before{content:"";width:28px;height:2px;background:currentColor}
+
+/* ---------- REVEAL ---------- */
+.reveal{position:relative;background:var(--ink)}
+.reveal-stage{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#141614}
+.reveal-surface{position:absolute;left:0;top:0;width:100%;height:100%;display:block;transform-origin:50% 50%;will-change:transform}
+.reveal-shade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,13,12,.94) 0%,rgba(11,13,12,.35) 20%,transparent 36%,transparent 58%,rgba(11,13,12,.88) 100%)}
+.reveal-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;display:block}
+.reveal-tag{position:absolute;top:calc(env(safe-area-inset-top,0px) + 88px);right:var(--pr);left:var(--pl);display:flex;justify-content:flex-end;gap:10px 22px;flex-wrap:wrap;
+  font:500 11px/1.3 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(236,239,231,.7);pointer-events:none}
+.reveal-copy{position:absolute;left:0;right:0;bottom:0;padding-left:var(--pl);padding-right:var(--pr);padding-bottom:clamp(28px,6vh,64px);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;pointer-events:none}
+.reveal-copy h2{margin:14px 0 0;font:900 clamp(46px,7.6vw,132px)/.84 var(--f-display);text-transform:uppercase;max-width:11ch;text-shadow:0 6px 40px rgba(0,0,0,.6)}
+.rv-meta{display:grid;gap:12px;min-width:0;width:min(300px,100%)}
+.rv-hint{margin:0;font:500 13px/1.45 var(--f-body);color:rgba(236,239,231,.82)}
+.rv-bar{position:relative;height:2px;background:rgba(236,239,231,.2);overflow:hidden}
+.rv-bar i{position:absolute;inset:0;background:var(--volt);transform-origin:0 50%;transform:scaleX(0)}
+
+/* ---------- COMPARE ---------- */
+.compare{padding-block:clamp(84px,13vh,150px) clamp(40px,6vh,72px);padding-left:var(--pl);padding-right:var(--pr)}
+.compare-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 40px;margin-bottom:clamp(24px,4vh,40px)}
+.compare-head h2{margin:14px 0 0;font:900 clamp(42px,6vw,100px)/.86 var(--f-display);text-transform:uppercase}
+.compare-head p{margin:0;max-width:30ch;color:rgba(236,239,231,.78)}
+.ba{position:relative;aspect-ratio:16/8;max-width:100%;overflow:hidden;background:var(--steel);touch-action:pan-y;cursor:ew-resize;--x:50%;user-select:none;-webkit-user-select:none}
+.ba canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ba .ba-before{clip-path:inset(0 calc(100% - var(--x)) 0 0)}
+.ba-lab{position:absolute;top:16px;z-index:2;padding:7px 11px;font:500 11px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;background:rgba(11,13,12,.76);color:var(--paper);pointer-events:none}
+.ba-lab.l{left:16px}.ba-lab.r{right:16px;color:var(--volt)}
+.ba-handle{position:absolute;top:0;bottom:0;left:var(--x);width:0;z-index:3;pointer-events:none}
+.ba-handle::before{content:"";position:absolute;top:0;bottom:0;left:-1.5px;width:3px;background:linear-gradient(180deg,rgba(255,255,255,.2),#fff 20%,#fff 80%,rgba(255,255,255,.2));box-shadow:0 0 22px 4px rgba(210,235,250,.45)}
+.ba-knob{position:absolute;top:50%;left:0;width:56px;height:56px;transform:translate(-50%,-50%);display:grid;place-items:center;background:var(--volt);color:var(--ink)}
+.ba-knob svg{width:26px;height:26px}
+.ba-range{position:absolute;top:50%;left:var(--x);width:56px;height:56px;transform:translate(-50%,-50%);margin:0;opacity:0;z-index:4;cursor:ew-resize}
+.ba-range:focus-visible+.ba-handle .ba-knob{outline:2px solid var(--paper);outline-offset:4px}
+
+/* ---------- SERVICES ---------- */
+.services{padding-block:clamp(90px,14vh,170px);padding-left:var(--pl);padding-right:var(--pr)}
+.svc-head{display:grid;gap:18px;margin-bottom:clamp(56px,10vh,120px)}
+.svc-head h2{margin:14px 0 0;font:900 clamp(46px,7.4vw,132px)/.84 var(--f-display);text-transform:uppercase;max-width:12ch}
+.svc-head .lead{margin:0;max-width:32ch;color:rgba(236,239,231,.78);font-size:clamp(16px,1.25vw,18px)}
+.svc{display:grid;grid-template-columns:minmax(0,1fr);position:relative}
+.svc+.svc{margin-top:clamp(80px,13vh,170px)}
+.svc-fig{position:relative;margin:0;overflow:hidden;background:var(--steel);aspect-ratio:4/3;max-width:100%}
+.svc-fig canvas{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform 1.2s var(--ease)}
+.svc:hover .svc-fig canvas{transform:scale(1.035)}
+.svc-fig figcaption{position:absolute;left:12px;top:12px;z-index:2;max-width:calc(100% - 24px);padding:7px 10px;font:500 10.5px/1.35 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;background:rgba(11,13,12,.74);color:var(--paper)}
+.svc-title{margin:-.4em 0 0;position:relative;z-index:2;font:900 clamp(60px,19vw,250px)/.8 var(--f-display);text-transform:uppercase;letter-spacing:-.01em;pointer-events:none;text-shadow:0 10px 50px rgba(0,0,0,.5)}
+.svc-body{display:grid;gap:18px;align-content:start;min-width:0;margin-top:20px}
+.svc-body p{margin:0;font:500 clamp(18px,1.6vw,24px)/1.3 var(--f-body);max-width:24ch}
+.svc-spec{list-style:none;margin:0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font:500 11.5px/1.45 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fog);max-width:34ch}
+.svc-spec li{display:flex;gap:10px;align-items:baseline}
+.svc-spec li::before{content:"";flex:none;width:10px;height:2px;background:var(--volt);transform:translateY(-3px)}
+@media (min-width:821px){
+  .svc-head{grid-template-columns:minmax(0,1fr) auto;align-items:end}
+  .svc{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(14px,2vw,28px)}
+  .svc-fig,.svc-title,.svc-body{grid-row:1;margin:0}
+  .svc-title{font-size:clamp(80px,12.4vw,236px)}
+  .svc--a .svc-fig{grid-column:1/span 8;aspect-ratio:16/10}
+  .svc--a .svc-title{grid-column:4/-1;align-self:end;text-align:right;margin-bottom:-.08em}
+  .svc--a .svc-body{grid-column:9/-1;padding-top:4px}
+  .svc--b .svc-fig{grid-column:7/-1;aspect-ratio:4/5}
+  .svc--b .svc-title{grid-column:1/span 10;align-self:start;margin-top:clamp(40px,9vh,110px);margin-left:calc(-1*var(--pl) - .05em)}
+  .svc--b .svc-body{grid-column:1/span 4;align-self:end;padding-bottom:6px}
+  .svc--c .svc-fig{grid-column:2/span 5;aspect-ratio:3/4}
+  .svc--c .svc-title{grid-column:7/span 2;align-self:stretch;writing-mode:vertical-rl;transform:rotate(180deg);font-size:clamp(70px,10.2vw,196px);line-height:.82;color:transparent;-webkit-text-stroke:1.5px var(--paper);text-shadow:none}
+  .svc--c .svc-body{grid-column:9/-1;align-self:end;padding-bottom:6px}
+}
+
+/* ---------- FINALE ---------- */
+.finale{position:relative;background:var(--ink)}
+.finale-stage{position:relative;height:100vh;height:100svh;min-height:620px;overflow:hidden;background:#161816 center/cover no-repeat}
+.finale-stage::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,13,12,.55),rgba(11,13,12,.25) 50%,rgba(11,13,12,.7))}
+.finale-volt{position:absolute;inset:0;z-index:1;background:var(--volt);color:var(--ink);display:flex;flex-direction:column;justify-content:center;
+  padding-left:var(--pl);padding-right:var(--pr);padding-block:calc(env(safe-area-inset-top,0px) + 90px) 56px}
+.finale-volt h2{margin:0;font:900 clamp(58px,13.4vw,250px)/.8 var(--f-display);text-transform:uppercase;letter-spacing:-.012em}
+.finale-volt h2 .ln{display:block}
+.finale-volt .tagline{margin:clamp(18px,3vh,30px) 0 0;font:600 clamp(18px,1.8vw,26px)/1.3 var(--f-body)}
+.finale-volt .cta-row{margin-top:clamp(22px,4vh,40px)}
+.finale-volt .btn{--bg:var(--ink);--fg:var(--volt)}
+.finale-volt .btn::after{background:linear-gradient(90deg,transparent,rgba(205,245,42,.5) 50%,transparent)}
+.finale-volt .btn-ghost{--bg:transparent;--fg:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.finale-volt .btn-ghost:hover{background:rgba(11,13,12,.08)}
+.finale-volt .btn-ghost::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.75) 50%,transparent)}
+.phone-line{margin:18px 0 0;font:500 13px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.phone-line span{user-select:all;-webkit-user-select:all;font-weight:500;border-bottom:1.5px solid currentColor}
+.finale-fx{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;display:block}
+
+/* ---------- FOOTER ---------- */
+.footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 32px;border-top:1px solid var(--line);
+  padding-left:var(--pl);padding-right:var(--pr);padding-block:28px calc(28px + env(safe-area-inset-bottom,0px));
+  font:500 11.5px/1.4 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fog)}
+.footer .logo{font-size:22px;color:var(--paper)}
+.footer .credit{text-decoration:none;color:var(--fog);transition:color .25s}
+.footer .credit b{font-weight:500;color:var(--paper);border-bottom:1.5px solid var(--volt);transition:color .25s}
+.footer .credit:hover,.footer .credit:hover b{color:var(--volt)}
+
+/* ---------- FLOATING WHATSAPP ---------- */
+.fab{position:fixed;z-index:45;right:var(--pr);bottom:calc(env(safe-area-inset-bottom,0px) + 20px);display:flex;align-items:center;height:48px;
+  text-decoration:none;color:var(--volt);background:rgba(21,24,22,.92);box-shadow:inset 0 0 0 1px rgba(205,245,42,.4),0 12px 30px rgba(0,0,0,.35);
+  opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.fab.show{opacity:1;transform:none;pointer-events:auto}
+.fab .ico{width:48px;height:48px;display:grid;place-items:center;flex:none}
+.fab svg{width:20px;height:20px}
+.fab .lbl{max-width:0;overflow:hidden;white-space:nowrap;font:700 11.5px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;transition:max-width .45s var(--ease),padding .45s var(--ease)}
+.fab:hover .lbl,.fab:focus-visible .lbl{max-width:120px;padding-right:16px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:620px){
+  .hero h1{font-size:clamp(44px,min(13.2vw,9vh),90px)}
+  .hero-copy-in{max-width:none}
+  .hero .cta-row .btn{flex:1 1 140px}
+  .hud{top:calc(env(safe-area-inset-top,0px) + 70px)}
+  .hud-v b{font-size:22px}
+  .hud-meter{width:96px}
+  .hud-sub{display:none}
+  .ba{aspect-ratio:4/5}
+  .reveal-tag{top:calc(env(safe-area-inset-top,0px) + 70px)}
+}
+@media (max-width:520px){
+  .logo{font-size:21px}
+  .nav-links .txt{font-size:11px;letter-spacing:.1em}
+  .nav-wa{padding:10px}
+  .nav-wa span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .btn{padding:0 18px;font-size:12.5px;letter-spacing:.12em}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn::after{display:none}
+  .svc-fig canvas,.fab,.fab .lbl{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="WASHDEMO, terug naar boven"><span>Wash</span><i class="jet" aria-hidden="true"></i><span>Demo</span></a>
+  <nav class="nav-links" aria-label="Hoofdmenu">
+    <a class="txt" href="#diensten">Diensten</a>
+    <a class="txt" href="#resultaat">Resultaat</a>
+    <a class="nav-wa" data-wa href="https://wa.me/31612345678" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
+      <span>WhatsApp</span>
+    </a>
+  </nav>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-stage" aria-hidden="true">
+      <canvas id="heroBg"></canvas>
+      <div class="hero-vignette"></div>
+      <canvas id="heroFx"></canvas>
+      <div class="gun" id="gun">
+        <svg viewBox="-680 -80 1500 900" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gSteel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a2e2c"/><stop offset=".2" stop-color="#cfd3cc"/><stop offset=".36" stop-color="#f6f8f3"/><stop offset=".6" stop-color="#7a7f7a"/><stop offset="1" stop-color="#1c1f1d"/>
+            </linearGradient>
+            <linearGradient id="gBlack" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4c514e"/><stop offset=".14" stop-color="#262928"/><stop offset=".55" stop-color="#131514"/><stop offset="1" stop-color="#050606"/>
+            </linearGradient>
+            <linearGradient id="gGrip" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#3a3f3c"/><stop offset=".3" stop-color="#181b1a"/><stop offset="1" stop-color="#050606"/>
+            </linearGradient>
+            <linearGradient id="gBrass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5a4719"/><stop offset=".3" stop-color="#ecd38b"/><stop offset=".52" stop-color="#b8954a"/><stop offset="1" stop-color="#3a2d0e"/>
+            </linearGradient>
+            <linearGradient id="gVolt" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#f1ffa6"/><stop offset=".34" stop-color="#cdf52a"/><stop offset="1" stop-color="#566f05"/>
+            </linearGradient>
+            <filter id="fSh" x="-30%" y="-30%" width="160%" height="170%"><feGaussianBlur stdDeviation="16"/></filter>
+          </defs>
+          <!-- cast shadow on the wall -->
+          <g opacity=".5" filter="url(#fSh)" transform="translate(36 60)">
+            <rect x="-641" y="-13" width="640" height="26" rx="6" fill="#000"/>
+            <path d="M-8 -26 L100 -32 Q136 -30 138 -4 L134 26 L184 198 Q190 220 168 224 L130 226 Q114 224 112 208 L76 40 L-8 22Z" fill="#000"/>
+            <path d="M156 246 C176 342 300 422 470 472 S760 564 840 720" fill="none" stroke="#000" stroke-width="26"/>
+          </g>
+          <!-- hose -->
+          <path d="M156 246 C176 342 300 422 470 472 S760 564 840 720" fill="none" stroke="#111312" stroke-width="24" stroke-linecap="round"/>
+          <path d="M149 250 C167 340 292 415 465 464 S752 556 830 712" fill="none" stroke="rgba(255,255,255,.11)" stroke-width="4" stroke-linecap="round"/>
+          <!-- swivel -->
+          <g transform="rotate(-14 152 232)">
+            <rect x="137" y="210" width="30" height="42" rx="3" fill="url(#gSteel)"/>
+            <path d="M137 222h30M137 230h30M137 238h30" stroke="rgba(0,0,0,.35)" stroke-width="1.5"/>
+          </g>
+          <!-- handle -->
+          <path d="M70 16 L128 14 L180 196 Q186 216 166 220 L134 222 Q118 220 114 204 Z" fill="url(#gGrip)"/>
+          <path d="M84 60l8 26M92 92l8 26M100 124l8 26M108 156l8 26" stroke="rgba(255,255,255,.07)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M128 18 L178 196" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
+          <!-- trigger guard -->
+          <path d="M0 22 C-6 98 26 168 70 196 L118 210" fill="none" stroke="#0d0f0e" stroke-width="10" stroke-linecap="round"/>
+          <path d="M-3 30 C-7 98 22 162 64 190" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="2"/>
+          <!-- trigger -->
+          <path d="M22 24 C16 70 26 120 52 156 L66 150 C48 112 42 72 46 26Z" fill="#2b2f2d"/>
+          <path d="M24 30 C19 72 29 118 53 150" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="2"/>
+          <!-- head -->
+          <path d="M-8 -24 L98 -30 Q130 -30 136 -6 L132 22 Q120 30 96 30 L30 26 L-8 18Z" fill="url(#gBlack)"/>
+          <path d="M-4 -21 L98 -27 Q123 -27 131 -11" fill="none" stroke="rgba(255,255,255,.24)" stroke-width="2"/>
+          <rect x="60" y="-38" width="24" height="9" rx="2" fill="url(#gVolt)"/>
+          <text x="16" y="9" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="rgba(236,239,231,.44)">MAX 280 BAR</text>
+          <!-- connector nut -->
+          <rect x="-40" y="-13" width="34" height="26" rx="2" fill="url(#gBrass)"/>
+          <path d="M-29 -13v26M-17 -13v26" stroke="rgba(0,0,0,.28)" stroke-width="1.5"/>
+          <!-- lance tube -->
+          <rect x="-566" y="-6.5" width="530" height="13" rx="3" fill="url(#gSteel)"/>
+          <!-- lance grip -->
+          <rect x="-352" y="-17" width="120" height="34" rx="10" fill="url(#gBlack)"/>
+          <path d="M-340 -16v32M-330 -16v32M-320 -16v32M-310 -16v32M-300 -16v32M-290 -16v32M-280 -16v32M-270 -16v32M-260 -16v32M-250 -16v32" stroke="rgba(0,0,0,.55)" stroke-width="2"/>
+          <path d="M-348 -13 H-236" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+          <!-- quick coupler -->
+          <rect x="-604" y="-14" width="40" height="28" rx="3" fill="url(#gSteel)"/>
+          <path d="M-598 -14v28M-593 -14v28M-588 -14v28M-583 -14v28M-578 -14v28" stroke="rgba(0,0,0,.3)" stroke-width="1.4"/>
+          <!-- 25° nozzle -->
+          <path d="M-641 -6 L-628 -11 L-604 -11 L-604 11 L-628 11 L-641 6Z" fill="url(#gVolt)"/>
+          <rect x="-643" y="-2" width="3" height="4" fill="#161817"/>
+          <text x="-626" y="3.5" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="500" fill="#2c3a00">25°</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hud" aria-hidden="true">
+      <span>Werkdruk</span>
+      <span class="hud-v"><b id="hudBar">000</b>bar</span>
+      <span class="hud-meter"><i id="hudMeter"></i></span>
+      <span class="hud-sub">Spuitkop 25° · 15 l/min</span>
+    </div>
+
+    <div class="hero-copy">
+      <div class="hero-copy-in">
+        <h1 id="hero-title"><span class="ln"><span>Vuil eruit.</span></span><span class="ln"><span>Resultaat erin.</span></span></h1>
+        <p class="sub">Professionele reiniging van opritten, terrassen en gevels.</p>
+        <div class="cta-row">
+          <a class="btn" data-wa data-magnetic href="https://wa.me/31612345678" target="_blank" rel="noopener"><span class="btn-in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>App ons</span></a>
+          <a class="btn btn-ghost" data-tel data-magnetic href="tel:+31612345678"><span class="btn-in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Bel direct</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLEAN REVEAL ================= -->
+  <section class="reveal" id="resultaat" aria-labelledby="rv-title">
+    <div class="reveal-stage" id="rvStage">
+      <canvas class="reveal-surface" id="rvSurface" aria-hidden="true"></canvas>
+      <div class="reveal-shade"></div>
+      <canvas class="reveal-fx" id="rvFx" aria-hidden="true"></canvas>
+      <div class="reveal-tag" aria-hidden="true"><span>Oprit · betonklinkers</span><span>Keperverband 45°</span></div>
+      <div class="reveal-copy">
+        <div>
+          <p class="eyebrow">Resultaat</p>
+          <h2 id="rv-title">Zie het groen verdwijnen</h2>
+        </div>
+        <div class="rv-meta">
+          <p class="rv-hint" id="rvHint">Scroll verder en volg de straal over een oprit vol aanslag.</p>
+          <div class="rv-bar" aria-hidden="true"><i id="rvBar"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compare" aria-labelledby="ba-title">
+    <div class="compare-head">
+      <div>
+        <p class="eyebrow">Voor en na</p>
+        <h2 id="ba-title">Vergelijk het zelf</h2>
+      </div>
+      <p>Sleep de schuif over het terras: links zoals het was, rechts na één beurt met de hogedrukreiniger.</p>
+    </div>
+    <div class="ba" id="ba">
+      <canvas class="ba-after" aria-hidden="true"></canvas>
+      <canvas class="ba-before" aria-hidden="true"></canvas>
+      <span class="ba-lab l">Voor</span><span class="ba-lab r">Na</span>
+      <input class="ba-range" id="baRange" type="range" min="0" max="100" value="50" aria-label="Vergelijk voor en na">
+      <div class="ba-handle"><span class="ba-knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></span></div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section class="services" id="diensten" aria-labelledby="svc-title">
+    <div class="svc-head">
+      <div>
+        <p class="eyebrow">Diensten</p>
+        <h2 id="svc-title">Wat wij schoonspuiten</h2>
+      </div>
+      <p class="lead">Drie oppervlakken, elk met de juiste druk en de juiste spuitkop. Beweeg over een foto om de straal te zien werken.</p>
+    </div>
+
+    <article class="svc svc--a">
+      <figure class="svc-fig" data-surface="klinkers"><canvas aria-hidden="true"></canvas><figcaption>Rode klinkers in keperverband</figcaption></figure>
+      <h3 class="svc-title">Opritten</h3>
+      <div class="svc-body">
+        <p>Hardnekkig vuil en groene aanslag verwijderen.</p>
+        <ul class="svc-spec"><li>Klinkers, betonsteen en natuursteen</li><li>Voegen na afloop opnieuw ingeveegd</li></ul>
+      </div>
+    </article>
+
+    <article class="svc svc--b">
+      <figure class="svc-fig" data-surface="tegels"><canvas aria-hidden="true"></canvas><figcaption>Betontegels 30 × 30</figcaption></figure>
+      <h3 class="svc-title">Terrassen</h3>
+      <div class="svc-body">
+        <p>Een fris en schoon terras.</p>
+        <ul class="svc-spec"><li>Tegels, keramiek en natuursteen</li><li>Ook mos en aanslag uit de voegen</li></ul>
+      </div>
+    </article>
+
+    <article class="svc svc--c">
+      <figure class="svc-fig" data-surface="gevel"><canvas aria-hidden="true"></canvas><figcaption>Baksteen in halfsteensverband</figcaption></figure>
+      <h3 class="svc-title">Gevels</h3>
+      <div class="svc-body">
+        <p>Professionele reiniging van buitenmuren.</p>
+        <ul class="svc-spec"><li>Baksteen en stucwerk</li><li>Druk afgestemd op steen en voeg</li></ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= FINALE ================= -->
+  <section class="finale" id="contact" aria-labelledby="fin-title">
+    <div class="finale-stage" id="finStage">
+      <div class="finale-volt" id="finVolt">
+        <h2 id="fin-title"><span class="ln">Tijd voor</span><span class="ln">een schone</span><span class="ln">start?</span></h2>
+        <p class="tagline">Laat het vuil aan ons over.</p>
+        <div class="cta-row">
+          <a class="btn" data-wa data-magnetic href="https://wa.me/31612345678" target="_blank" rel="noopener"><span class="btn-in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>Stuur een WhatsApp</span></a>
+          <a class="btn btn-ghost" data-tel data-magnetic href="tel:+31612345678"><span class="btn-in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>Bel ons</span></a>
+        </div>
+        <p class="phone-line">Of bel direct: <span data-phone-text>06 12 34 56 78</span></p>
+      </div>
+      <canvas class="finale-fx" id="finFx" aria-hidden="true"></canvas>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <a class="logo" href="#top" aria-label="WASHDEMO, terug naar boven"><span>Wash</span><i class="jet" aria-hidden="true"></i><span>Demo</span></a>
+  <span>Opritten · Terrassen · Gevels</span>
+  <span>Demowebsite · voorbeeldnummers</span>
+  <a class="credit" href="https://hbdesignlab.nl" target="_blank" rel="noopener">Gemaakt door <b>HB Designlab</b></a>
+</footer>
+
+<a class="fab" id="fab" data-wa href="https://wa.me/31612345678" target="_blank" rel="noopener" aria-label="Stuur een WhatsApp-bericht">
+  <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg></span>
+  <span class="lbl">WhatsApp</span>
+</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(() => {
+'use strict';
+
+/* =====================================================================
+   CONTACT — DEMO-PLACEHOLDERS. Vervang deze nummers vóór publicatie.
+   ===================================================================== */
+const CONTACT = {
+  phoneDisplay: '06 12 34 56 78',   // DEMO: zichtbaar telefoonnummer
+  phoneTel:     '+31612345678',     // DEMO: belnummer, internationaal formaat
+  whatsapp:     '31612345678',      // DEMO: WhatsApp-nummer, landcode zonder + of 0
+  message:      'Hallo, ik wil graag meer informatie over jullie reinigingsdiensten.'
+};
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+function wireContacts() {
+  const wa = `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(CONTACT.message)}`;
+  $$('[data-wa]').forEach(a => { a.href = wa; a.target = '_blank'; a.rel = 'noopener'; });
+  $$('[data-tel]').forEach(a => { a.href = 'tel:' + CONTACT.phoneTel; });
+  $$('[data-phone-text]').forEach(el => { el.textContent = CONTACT.phoneDisplay; });
+}
+wireContacts();
+
+/* ---------- environment ---------- */
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+const HAS_GSAP = !!(window.gsap && window.ScrollTrigger);
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const SMALL = () => Math.min(innerWidth, innerHeight) < 700;
+const DISPLAY = '"Big Shoulders Display", "Oswald", Impact, sans-serif';
+if (HAS_GSAP) { gsap.registerPlugin(ScrollTrigger); ScrollTrigger.config({ ignoreMobileResize: true }); }
+
+/* ---------- math + noise ---------- */
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const ss = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+function rng(seed) {
+  return function () {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function makeNoise(seed) {
+  const R = rng(seed), p = new Uint8Array(512), v = new Float32Array(256);
+  for (let i = 0; i < 256; i++) { p[i] = i; v[i] = R(); }
+  for (let i = 255; i > 0; i--) { const j = (R() * (i + 1)) | 0; const t = p[i]; p[i] = p[j]; p[j] = t; }
+  for (let i = 0; i < 256; i++) p[i + 256] = p[i];
+  const h = (x, y) => v[p[(p[x & 255] + y) & 255]];
+  function vn(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    let fx = x - xi, fy = y - yi;
+    fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy);
+    const a = h(xi, yi), b = h(xi + 1, yi), c = h(xi, yi + 1), d = h(xi + 1, yi + 1);
+    return a + (b - a) * fx + (c - a) * fy + (a - b - c + d) * fx * fy;
+  }
+  return function (x, y, oct = 4) {
+    let s = 0, amp = .5, f = 1, n = 0;
+    for (let o = 0; o < oct; o++) { s += amp * vn(x * f + o * 19.7, y * f + o * 7.3); n += amp; amp *= .5; f *= 2.03; }
+    return s / n;
+  };
+}
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; }
+
+/* paint a low-res field (alpha = fn(x,y)) stretched with smoothing */
+function paintField(ctx, W, H, cell, fn, rgb, comp = 'source-over') {
+  const w = Math.ceil(W / cell) + 1, h = Math.ceil(H / cell) + 1;
+  const c = makeCanvas(w, h), x = c.getContext('2d'), img = x.createImageData(w, h), d = img.data;
+  let k = 0;
+  for (let j = 0; j < h; j++) for (let i = 0; i < w; i++, k += 4) {
+    d[k] = rgb[0]; d[k + 1] = rgb[1]; d[k + 2] = rgb[2]; d[k + 3] = clamp(fn(i * cell, j * cell), 0, 1) * 255;
+  }
+  x.putImageData(img, 0, 0);
+  ctx.save(); ctx.globalCompositeOperation = comp; ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(c, 0, 0, w * cell, h * cell); ctx.restore();
+}
+function grain(ctx, W, H, R, alpha, scale, comp = 'overlay') {
+  const w = Math.ceil(W / scale), h = Math.ceil(H / scale);
+  const c = makeCanvas(w, h), x = c.getContext('2d'), img = x.createImageData(w, h), d = img.data;
+  for (let k = 0; k < d.length; k += 4) { const v = R() * 255; d[k] = d[k + 1] = d[k + 2] = v; d[k + 3] = 255; }
+  x.putImageData(img, 0, 0);
+  ctx.save(); ctx.globalAlpha = alpha; ctx.globalCompositeOperation = comp; ctx.imageSmoothingEnabled = scale > 1;
+  ctx.drawImage(c, 0, 0, W, H); ctx.restore();
+}
+function spots(ctx, W, H, R, s, clusters, per, rgb, aMin, aMax, spread) {
+  for (let k = 0; k < clusters; k++) {
+    const cx = R() * W, cy = R() * H;
+    for (let i = 0; i < per; i++) {
+      const a = R() * 6.283, dd = Math.pow(R(), 1.6) * spread, r = (.8 + R() * R() * 4) * s;
+      ctx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${(aMin + R() * (aMax - aMin)).toFixed(2)})`;
+      ctx.beginPath(); ctx.ellipse(cx + Math.cos(a) * dd, cy + Math.sin(a) * dd, r, r * (.6 + R() * .5), R() * 3, 0, 6.283); ctx.fill();
+    }
+  }
+}
+function streaks(ctx, W, H, R, s, n, y0s, rgb, aMax, maxLen) {
+  for (let i = 0; i < n; i++) {
+    const x = R() * W, y0 = y0s ? y0s[(R() * y0s.length) | 0] : R() * H * .25;
+    const len = (30 + R() * R() * maxLen) * s, w = (1 + R() * 3.4) * s;
+    const g = ctx.createLinearGradient(0, y0, 0, y0 + len);
+    g.addColorStop(0, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${(aMax * (.5 + R() * .5)).toFixed(2)})`);
+    g.addColorStop(1, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0)`);
+    ctx.fillStyle = g; ctx.fillRect(x, y0, w, len);
+  }
+}
+
+/* erasing brush: soft, ragged, with fan streaks */
+function makeBrush(seed) {
+  const S = 128, c = makeCanvas(S, S), x = c.getContext('2d'), img = x.createImageData(S, S), d = img.data, N = makeNoise(seed);
+  for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) {
+    const dx = (i + .5) / S * 2 - 1, dy = (j + .5) / S * 2 - 1, r = Math.hypot(dx, dy), n = N(i / 11, j / 11, 3);
+    const streak = .5 + .5 * Math.sin(dy * 24 + n * 5);
+    let a = 1 - ss(.3, .98, r + (n - .5) * .55);
+    a *= .74 + .26 * streak;
+    const k = (j * S + i) * 4; d[k] = d[k + 1] = d[k + 2] = 0; d[k + 3] = clamp(a, 0, 1) * 255;
+  }
+  x.putImageData(img, 0, 0); return c;
+}
+function stamp(ctx, brush, x, y, r, ang, sx, sy, alpha) {
+  ctx.save(); ctx.globalCompositeOperation = 'destination-out'; ctx.globalAlpha = alpha;
+  ctx.translate(x, y); ctx.rotate(ang); ctx.scale(sx, sy); ctx.drawImage(brush, -r, -r, r * 2, r * 2); ctx.restore();
+}
+const BRUSH = makeBrush(91);
+const MIST = (() => {
+  const c = makeCanvas(64, 64), x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, 'rgba(232,240,244,1)'); g.addColorStop(.45, 'rgba(232,240,244,.45)'); g.addColorStop(1, 'rgba(232,240,244,0)');
+  x.fillStyle = g; x.fillRect(0, 0, 64, 64); return c;
+})();
+
+/* =====================================================================
+   SURFACES — procedural, so every pixel shows real pressure-washing
+   material: board-formed concrete, klinkers, tegels, baksteen.
+   ===================================================================== */
+function buildWall(W, H, s, layout, seed = 7) {
+  const R = rng(seed), N = makeNoise(seed + 4);
+  const cell = Math.max(3, Math.round(W / 420));
+  const clean = makeCanvas(W, H), c = clean.getContext('2d');
+  c.fillStyle = '#50534e'; c.fillRect(0, 0, W, H);
+  paintField(c, W, H, cell, (x, y) => .24 * ss(.4, .7, N(x / (420 * s), y / (420 * s), 5)), [226, 228, 220]);
+  paintField(c, W, H, cell, (x, y) => .34 * ss(.42, .72, N(x / (160 * s) + 31, y / (160 * s) + 17, 5)), [18, 20, 18]);
+  grain(c, W, H, R, .22, 2.5 * s); grain(c, W, H, R, .12, 1);
+  const pores = Math.round(W * H / (700 * s * s));
+  for (let i = 0; i < pores; i++) {
+    c.fillStyle = `rgba(10,11,10,${(.18 + R() * .4).toFixed(2)})`;
+    c.beginPath(); c.arc(R() * W, R() * H, (.5 + R() * R() * 2.6) * s, 0, 6.283); c.fill();
+  }
+  // formwork panels, seams and tie holes
+  const pw = Math.max(W, H) / 4.1, ph = pw * .58, ox = ((W % pw) / 2) - pw * .5 * R(), oy = H * .07;
+  const seamsY = [0];
+  const seam = (x, y, w, h, hor) => {
+    c.fillStyle = 'rgba(0,0,0,.08)'; hor ? c.fillRect(x, y - 6 * s, w, 14 * s) : c.fillRect(x - 6 * s, y, 14 * s, h);
+    c.fillStyle = 'rgba(6,7,6,.55)'; c.fillRect(x, y, w, h);
+    c.fillStyle = 'rgba(255,255,255,.07)'; hor ? c.fillRect(x, y + h, w, s) : c.fillRect(x + w, y, s, h);
+  };
+  for (let y = oy; y < H; y += ph) { seamsY.push(y); seam(0, y, W, 1.8 * s, true); }
+  for (let x = ox; x < W; x += pw) seam(x, 0, 1.8 * s, H, false);
+  const tie = (x, y) => {
+    const r = 7 * s;
+    let g = c.createRadialGradient(x, y, 0, x, y, r * 3.4); g.addColorStop(0, 'rgba(0,0,0,.18)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g; c.fillRect(x - r * 3.4, y - r * 3.4, r * 6.8, r * 6.8);
+    g = c.createRadialGradient(x - r * .2, y - r * .2, 0, x, y, r); g.addColorStop(0, 'rgba(4,4,4,.96)'); g.addColorStop(.7, 'rgba(22,22,20,.9)'); g.addColorStop(1, 'rgba(40,40,38,0)');
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, 6.283); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,.14)'; c.lineWidth = 1.2 * s; c.beginPath(); c.arc(x, y, r * .95, .2, 1.9); c.stroke();
+  };
+  for (let y = oy - ph; y < H; y += ph) for (let x = ox - pw; x < W + pw; x += pw) { tie(x + pw * .25, y + ph * .5); tie(x + pw * .75, y + ph * .5); }
+  // painted lettering
+  if (layout) {
+    const lc = makeCanvas(W, H), l = lc.getContext('2d');
+    l.fillStyle = '#e9ece3'; l.font = `900 ${layout.fs * s}px ${DISPLAY}`; l.textBaseline = 'alphabetic';
+    layout.lines.forEach(ln => l.fillText(ln.text, ln.x * s, ln.base * s));
+    paintField(l, W, H, cell, (x, y) => .26 * ss(.45, .75, N(x / (60 * s) + 5, y / (60 * s) + 2, 4)), [118, 122, 114], 'source-atop');
+    grain(l, W, H, R, .12, 1.5 * s, 'source-atop');
+    paintField(l, W, H, Math.max(2, cell - 1), (x, y) => ss(.66, .72, N(x / (16 * s) + 9, y / (16 * s) + 4, 3)), [0, 0, 0], 'destination-out');
+    c.drawImage(lc, 0, 0);
+  }
+  // weathered version
+  const dirty = makeCanvas(W, H), d = dirty.getContext('2d');
+  d.drawImage(clean, 0, 0);
+  paintField(d, W, H, cell, (x, y) => .5 + .42 * ss(.36, .66, N(x / (300 * s) + 50, y / (300 * s) + 50, 5)), [34, 37, 25], 'multiply');
+  paintField(d, W, H, cell, (x, y) => .72 * ss(.48, .64, N(x / (150 * s) + 80, y / (150 * s) + 12, 5)) * (.4 + .6 * y / H), [66, 86, 28]);
+  paintField(d, W, H, cell, (x, y) => .6 * ss(.55, .7, N(x / (80 * s) + 3, y / (80 * s) + 9, 4)), [16, 22, 10], 'multiply');
+  streaks(d, W, H, R, s, Math.round(W / (5 * s)), seamsY, [12, 14, 9], .6, 440);
+  spots(d, W, H, R, s, 46, 26, [16, 18, 10], .25, .62, 46 * s);
+  spots(d, W, H, R, s, 16, 18, [168, 174, 116], .1, .25, 30 * s);
+  grain(d, W, H, R, .07, 1);
+  return { clean, dirty };
+}
+
+function herringbone(ctx, W, H, u, each) {
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(Math.PI / 4);
+  const ext = Math.hypot(W, H) / 2 / u + 3, A = Math.ceil(ext) + 2, B = Math.ceil(ext / 2) + 2, lim = (ext + 3) * u;
+  for (let a = -A; a <= A; a++) for (let b = -B; b <= B; b++) {
+    const ox = (a + 2 * b) * u, oy = (a - 2 * b) * u;
+    if (Math.abs(ox) > lim || Math.abs(oy) > lim) continue;
+    each(ox, oy, 2 * u, u); each(ox, oy + u, u, 2 * u);
+  }
+  ctx.restore();
+}
+function unit(c, x, y, w, h, g, bev, rgb) {
+  c.fillStyle = `rgb(${rgb[0] | 0},${rgb[1] | 0},${rgb[2] | 0})`; c.fillRect(x + g, y + g, w - 2 * g, h - 2 * g);
+  c.fillStyle = 'rgba(255,255,255,.12)'; c.fillRect(x + g, y + g, w - 2 * g, bev); c.fillRect(x + g, y + g, bev, h - 2 * g);
+  c.fillStyle = 'rgba(0,0,0,.26)'; c.fillRect(x + g, y + h - g - bev, w - 2 * g, bev); c.fillRect(x + w - g - bev, y + g, bev, h - 2 * g);
+}
+const PAL = {
+  grey: { joint: '#7a7362', pick: R => { let d = (R() - .5) * 20; if (R() < .14) d -= 18; if (R() < .06) d += 14; return [100 + d, 102 + d, 98 + d]; } },
+  red: { joint: '#968c78', pick: R => { const b = [[134, 64, 46], [118, 56, 42], [148, 78, 56], [104, 50, 40], [126, 72, 58]][(R() * 5) | 0]; const d = (R() - .5) * 14; return [b[0] + d, b[1] + d * .8, b[2] + d * .7]; } }
+};
+function buildPavers(W, H, u, pal, seed, tracks) {
+  const R = rng(seed), N = makeNoise(seed + 2), cell = Math.max(3, Math.round(W / 420));
+  const joint = Math.max(1.5, u * .06), bev = Math.max(1, u * .05), s = u / 40;
+  const clean = makeCanvas(W, H), c = clean.getContext('2d');
+  c.fillStyle = pal.joint; c.fillRect(0, 0, W, H);
+  herringbone(c, W, H, u, (x, y, w, h) => unit(c, x, y, w, h, joint / 2, bev, pal.pick(R)));
+  paintField(c, W, H, cell, (x, y) => .18 * ss(.42, .7, N(x / (9 * u), y / (9 * u), 4)), [255, 255, 255], 'overlay');
+  grain(c, W, H, R, .22, 1.2);
+  spots(c, W, H, R, s * .5, 90, 30, [230, 228, 220], .06, .16, u * 3);
+  const dirty = makeCanvas(W, H), d = dirty.getContext('2d');
+  d.drawImage(clean, 0, 0);
+  const R2 = rng(seed + 9);
+  herringbone(d, W, H, u, (x, y, w, h) => {
+    d.lineWidth = joint * (1.6 + R2() * 1.8);
+    d.strokeStyle = `rgba(${48 + R2() * 20 | 0},${66 + R2() * 24 | 0},${22 + R2() * 10 | 0},${(.5 + R2() * .45).toFixed(2)})`;
+    d.strokeRect(x, y, w, h);
+  });
+  paintField(d, W, H, cell, (x, y) => .42 + .42 * ss(.36, .66, N(x / (7 * u) + 40, y / (7 * u) + 40, 5)), [38, 42, 28], 'multiply');
+  paintField(d, W, H, cell, (x, y) => .66 * ss(.5, .64, N(x / (5 * u) + 7, y / (5 * u) + 3, 5)), [70, 92, 34]);
+  paintField(d, W, H, cell, (x, y) => .5 * ss(.56, .7, N(x / (2.5 * u) + 13, y / (2.5 * u) + 1, 4)), [18, 24, 12], 'multiply');
+  spots(d, W, H, R, s, 70, 18, [14, 15, 10], .35, .75, u * 2);
+  if (tracks) [.3, .66].forEach(f => {
+    const x = W * f, wd = u * 3.4, g = d.createLinearGradient(x - wd, 0, x + wd, 0);
+    g.addColorStop(0, 'rgba(20,20,16,0)'); g.addColorStop(.5, 'rgba(20,20,16,.34)'); g.addColorStop(1, 'rgba(20,20,16,0)');
+    d.fillStyle = g; d.fillRect(x - wd, 0, wd * 2, H);
+  });
+  grain(d, W, H, R, .06, 1);
+  return { clean, dirty };
+}
+function buildTiles(W, H, t, seed) {
+  const R = rng(seed), N = makeNoise(seed + 2), cell = Math.max(3, Math.round(W / 420));
+  const joint = Math.max(2, t * .035), bev = Math.max(1, t * .02), s = t / 120;
+  const clean = makeCanvas(W, H), c = clean.getContext('2d');
+  c.fillStyle = '#6c6759'; c.fillRect(0, 0, W, H);
+  const ox = -R() * t, oy = -R() * t, cells = [];
+  for (let y = oy; y < H; y += t) for (let x = ox; x < W; x += t) {
+    const d = (R() - .5) * 14 + (R() < .1 ? -10 : 0);
+    unit(c, x, y, t, t, joint / 2, bev, [130 + d, 131 + d, 125 + d]); cells.push([x, y]);
+  }
+  paintField(c, W, H, cell, (x, y) => .2 * ss(.42, .7, N(x / (t * .8), y / (t * .8), 4)), [255, 255, 255], 'overlay');
+  grain(c, W, H, R, .24, 1.2);
+  spots(c, W, H, R, s * .6, 120, 26, [40, 40, 36], .08, .2, t * .5);
+  const dirty = makeCanvas(W, H), d = dirty.getContext('2d');
+  d.drawImage(clean, 0, 0);
+  cells.forEach(([x, y]) => {
+    d.lineWidth = joint * (1.8 + R() * 2); d.strokeStyle = `rgba(${46 + R() * 20 | 0},${68 + R() * 22 | 0},${22 + R() * 10 | 0},${(.55 + R() * .4).toFixed(2)})`;
+    d.strokeRect(x, y, t, t);
+  });
+  paintField(d, W, H, cell, (x, y) => (.38 + .45 * ss(.36, .66, N(x / (t * 2.2) + 40, y / (t * 2.2) + 40, 5))) * (.75 + .25 * (1 - x / W)), [40, 46, 30], 'multiply');
+  paintField(d, W, H, cell, (x, y) => .7 * ss(.5, .64, N(x / (t * 1.4) + 7, y / (t * 1.4) + 3, 5)) * (.55 + .45 * (1 - x / W)), [74, 96, 36]);
+  spots(d, W, H, R, s, 50, 20, [14, 15, 10], .35, .75, t * .6);
+  for (let i = 0; i < 16; i++) { // tannin stains from old leaves
+    const L = t * (.18 + R() * .16), Wd = L * .42;
+    d.save(); d.translate(R() * W, R() * H); d.rotate(R() * 6.28);
+    d.fillStyle = `rgba(52,38,20,${(.28 + R() * .2).toFixed(2)})`;
+    d.beginPath(); d.moveTo(-L, 0); d.quadraticCurveTo(0, -Wd, L, 0); d.quadraticCurveTo(0, Wd, -L, 0); d.fill();
+    d.restore();
+  }
+  grain(d, W, H, R, .06, 1);
+  return { clean, dirty };
+}
+function buildBrick(W, H, bl, seed) {
+  const R = rng(seed), N = makeNoise(seed + 2), cell = Math.max(3, Math.round(W / 420));
+  const bh = bl * .235, j = Math.max(1.5, bl * .045), bev = Math.max(1, bl * .012), s = bl / 120;
+  const cols = [[128, 58, 40], [112, 50, 34], [142, 72, 48], [98, 46, 34], [150, 86, 60], [120, 66, 50]];
+  const clean = makeCanvas(W, H), c = clean.getContext('2d');
+  c.fillStyle = '#aaa496'; c.fillRect(0, 0, W, H);
+  let row = 0;
+  for (let y = -bh * R(); y < H; y += bh + j, row++) {
+    const off = row % 2 ? (bl + j) / 2 : 0;
+    for (let x = -off - (bl + j) * .3; x < W; x += bl + j) {
+      const b = cols[(R() * cols.length) | 0], d = (R() - .5) * 16;
+      unit(c, x, y, bl + j, bh + j, j / 2, bev, [b[0] + d, b[1] + d * .7, b[2] + d * .6]);
+    }
+  }
+  paintField(c, W, H, cell, (x, y) => .3 * ss(.4, .72, N(x / (bl * .3), y / (bl * .3), 4)), [40, 20, 14], 'multiply');
+  grain(c, W, H, R, .26, 1.2);
+  const dirty = makeCanvas(W, H), d = dirty.getContext('2d');
+  d.drawImage(clean, 0, 0);
+  paintField(d, W, H, cell, (x, y) => .3 + .3 * ss(.36, .66, N(x / (bl * 1.6) + 40, y / (bl * 1.6) + 40, 5)), [60, 58, 46], 'multiply');
+  paintField(d, W, H, cell, (x, y) => .85 * ss(.4, .58, N(x / (bl * 1.1) + 7, y / (bl * 1.1) + 3, 5)) * ss(.3, 1, y / H), [52, 74, 28]);
+  paintField(d, W, H, cell, (x, y) => .5 * ss(.5, .66, N(x / (bl * .5) + 2, y / (bl * .5) + 8, 4)) * ss(.45, 1, y / H), [16, 24, 10], 'multiply');
+  streaks(d, W, H, R, s, 70, null, [18, 18, 14], .55, 420);
+  spots(d, W, H, R, s, 30, 16, [14, 15, 10], .3, .7, bl * .5);
+  grain(d, W, H, R, .06, 1);
+  return { clean, dirty };
+}
+function buildSurface(kind, W, H) {
+  if (kind === 'klinkers') return buildPavers(W, H, Math.max(12, W * .032), PAL.red, 21, false);
+  if (kind === 'tegels') return buildTiles(W, H, Math.max(40, W * .19), 33);
+  if (kind === 'gevel') return buildBrick(W, H, Math.max(40, W * .17), 45);
+  return buildTiles(W, H, Math.max(40, W * .12), 57);
+}
+
+/* =====================================================================
+   SPRAY — jet core, break-up droplets, impact splash, mist
+   ===================================================================== */
+class Spray {
+  constructor(canvas, max) { this.c = canvas; this.x = canvas.getContext('2d'); this.p = []; this.max = max; this.flow = 0; this.w = 1; this.h = 1; this.k = 1; }
+  resize(w, h, k) { this.w = w; this.h = h; this.k = k; this.c.width = Math.round(w * k); this.c.height = Math.round(h * k); }
+  get count() { return this.p.length; }
+  spawn(x, y, vx, vy, life, size, type, g, drag, grow) { if (this.p.length < this.max) this.p.push({ x, y, vx, vy, t: 0, life, size, type, g, drag, grow }); }
+  update(dt) {
+    const P = this.p;
+    for (let i = P.length - 1; i >= 0; i--) {
+      const q = P[i]; q.t += dt;
+      if (q.t >= q.life) { P[i] = P[P.length - 1]; P.pop(); continue; }
+      q.vy += q.g * dt;
+      if (q.drag) { const f = Math.exp(-q.drag * dt); q.vx *= f; q.vy *= f; }
+      q.x += q.vx * dt; q.y += q.vy * dt;
+      if (q.grow) q.size += q.grow * dt;
+    }
+    this.flow -= dt * 1500;
+  }
+  clear() { const x = this.x; x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, this.c.width, this.c.height); x.setTransform(this.k, 0, 0, this.k, 0, 0); }
+  emit(N, E, power, dt, o) {
+    const dx = E.x - N.x, dy = E.y - N.y, len = Math.hypot(dx, dy) || 1, ux = dx / len, uy = dy / len, px = -uy, py = ux, R = Math.random;
+    const n = (rate) => Math.floor(rate * power * dt + R());
+    const r = o.r;
+    for (let i = n(o.along || 380); i > 0; i--) {
+      const f = .2 + .8 * Math.pow(R(), .6), off = (R() - .5) * len * .05 * f, sp = 900 + R() * 900;
+      this.spawn(N.x + dx * f + px * off, N.y + dy * f + py * off, ux * sp + px * (R() - .5) * 140, uy * sp + py * (R() - .5) * 140, .05 + R() * .12, .7 + R() * 1.3, 0, 0, 0, 0);
+    }
+    for (let i = n(o.splash || 520); i > 0; i--) {
+      const a = Math.atan2(-uy, -ux) + (R() - .5) * 2.8, sp = 150 + R() * 680;
+      this.spawn(E.x + (R() - .5) * r * .6, E.y + (R() - .5) * r * .6, Math.cos(a) * sp, Math.sin(a) * sp - (o.g ? 140 : 0), .22 + R() * .5, .7 + R() * 1.6, R() < .12 ? 2 : 0, o.g || 0, o.g ? 1.2 : 3, 0);
+    }
+    for (let i = n(o.mist || 28); i > 0; i--) {
+      this.spawn(E.x + (R() - .5) * r, E.y + (R() - .5) * r, (R() - .5) * 70 - ux * 40, (o.g ? -30 - R() * 40 : (R() - .5) * 60) - uy * 30, .9 + R() * 1.4, r * (.35 + R() * .3), 1, 0, .6, r * .8);
+    }
+  }
+  jet(N, E, power, w0, w1) {
+    const x = this.x, dx = E.x - N.x, dy = E.y - N.y, len = Math.hypot(dx, dy);
+    if (len < 2 || power < .01) return;
+    const ux = dx / len, uy = dy / len, px = -uy, py = ux;
+    x.save(); x.lineCap = 'round';
+    x.globalCompositeOperation = 'lighter';
+    [[w1 * 3.2, .045], [w1 * 1.7, .08]].forEach(([w, a]) => {
+      x.strokeStyle = `rgba(190,220,236,${a * power})`; x.lineWidth = w; x.beginPath(); x.moveTo(N.x, N.y); x.lineTo(E.x, E.y); x.stroke();
+    });
+    x.globalCompositeOperation = 'source-over';
+    const g = x.createLinearGradient(N.x, N.y, E.x, E.y);
+    g.addColorStop(0, `rgba(255,255,255,${.96 * power})`); g.addColorStop(.6, `rgba(240,248,252,${.74 * power})`); g.addColorStop(1, `rgba(228,240,248,${.32 * power})`);
+    x.fillStyle = g; x.beginPath();
+    x.moveTo(N.x + px * w0 / 2, N.y + py * w0 / 2); x.lineTo(E.x + px * w1 / 2, E.y + py * w1 / 2);
+    x.lineTo(E.x - px * w1 / 2, E.y - py * w1 / 2); x.lineTo(N.x - px * w0 / 2, N.y - py * w0 / 2); x.closePath(); x.fill();
+    x.setLineDash([len * .05, len * .07]); x.lineDashOffset = this.flow; x.lineWidth = 1.1; x.strokeStyle = `rgba(255,255,255,${.62 * power})`;
+    [-.28, .06, .3].forEach(k => { x.beginPath(); x.moveTo(N.x + px * w0 * k, N.y + py * w0 * k); x.lineTo(E.x + px * w1 * k, E.y + py * w1 * k); x.stroke(); });
+    x.setLineDash([]);
+    const rg = x.createRadialGradient(E.x, E.y, 0, E.x, E.y, w1 * 5);
+    rg.addColorStop(0, `rgba(255,255,255,${.34 * power})`); rg.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = rg; x.fillRect(E.x - w1 * 5, E.y - w1 * 5, w1 * 10, w1 * 10);
+    x.restore();
+  }
+  draw() {
+    const x = this.x;
+    x.save(); x.lineCap = 'round'; x.strokeStyle = 'rgb(232,240,244)'; x.fillStyle = '#fff';
+    for (const q of this.p) {
+      const a = 1 - q.t / q.life;
+      if (q.type === 0) {
+        x.globalAlpha = .58 * a; x.lineWidth = q.size; x.beginPath(); x.moveTo(q.x, q.y); x.lineTo(q.x - q.vx * .014, q.y - q.vy * .014); x.stroke();
+      } else if (q.type === 1) {
+        x.globalAlpha = .1 * a * Math.min(1, q.t / .2); x.drawImage(MIST, q.x - q.size, q.y - q.size, q.size * 2, q.size * 2);
+      } else {
+        x.globalAlpha = a; x.fillRect(q.x, q.y, q.size, q.size);
+      }
+    }
+    x.restore();
+  }
+}
+
+/* =====================================================================
+   HERO — the jet cleans the painted brand off a weathered wall
+   ===================================================================== */
+const LANCE = 641, PIVX = 680, PIVY = 80, PAD = 12;
+const hero = {
+  el: $('#top'), stage: $('.hero-stage'), bg: $('#heroBg'), gun: $('#gun'),
+  spray: new Spray($('#heroFx'), 700), hudBar: $('#hudBar'), hudMeter: $('#hudMeter'),
+  w: 0, h: 0, kb: 1, aim: { x: 0, y: 0 }, ptr: null, power: 0, reach: 0, firing: false, intro: false, done: false,
+  enter: 1, scroll: 0, lastMove: -1e9, last: null, par: { x: 0, y: 0, tx: 0, ty: 0 }, visible: true, hud: 0, hudShown: -1, dirtyFrame: true
+};
+
+function wordLayout(w, h) {
+  const m = makeCanvas(10, 10).getContext('2d'), portrait = w / h < .95;
+  const lines = portrait ? ['WASH', 'DEMO'] : ['WASHDEMO'];
+  m.font = `900 100px ${DISPLAY}`;
+  const widest = Math.max(...lines.map(t => m.measureText(t).width));
+  const capR = (m.measureText('H').actualBoundingBoxAscent || 72) / 100;
+  let fs = (w * 1.07) / (widest / 100);
+  fs = Math.min(fs, (portrait ? h * .19 : h * .37) / capR);
+  const cap = fs * capR, gap = cap * .1, top = Math.max(h * .13, 80);
+  const out = lines.map((t, i) => { const tw = m.measureText(t).width * fs / 100; return { text: t, x: (w - tw) / 2, top: top + (cap + gap) * i, base: top + cap * (i + 1) + gap * i }; });
+  return { lines: out, fs, cap, top, bottom: top + lines.length * cap + (lines.length - 1) * gap, portrait };
+}
+function introPath(L, w) {
+  const x0 = w * .03, x1 = w * .97, band = L.portrait ? .85 : 1.1;
+  let side = 0;
+  const pts = [{ x: x0, y: L.lines[0].top + L.cap * .28, d: 0 }];
+  L.lines.forEach((ln, i) => [.28, .74].forEach((f, j) => {
+    const y = ln.top + L.cap * f;
+    if (i || j) pts.push({ x: side ? x1 : x0, y, d: .26 });
+    side ^= 1; pts.push({ x: side ? x1 : x0, y, d: band });
+  }));
+  return pts;
+}
+function restAim() { const L = hero.L; return L.portrait ? { x: hero.w * .4, y: L.lines[0].top + L.cap * .55 } : { x: hero.w * .34, y: L.top + L.cap * .52 }; }
+function gunPose(T) {
+  const { w, h, L } = hero, tx = clamp(T.x / w, 0, 1);
+  const a0 = L.portrait ? lerp(40, 62, tx) : lerp(16, 34, tx);
+  const s = L.portrait ? clamp(w / 820, .42, .7) : clamp(w / 1700, .6, 1.15);
+  const jl = L.portrait ? h * .13 : w * .22;
+  let a = a0 * Math.PI / 180;
+  const nx = T.x + Math.cos(a) * jl, ny = T.y + Math.sin(a) * jl;
+  let Px = nx + Math.cos(a) * LANCE * s, Py = ny + Math.sin(a) * LANCE * s;
+  const e = 1 - hero.enter;
+  Px += e * w * .45; Py += e * h * .55; a += e * .6;
+  Py += hero.scroll * h * .4; a += hero.scroll * .25;
+  return { P: { x: Px, y: Py }, a, s, N: { x: Px - Math.cos(a) * LANCE * s, y: Py - Math.sin(a) * LANCE * s } };
+}
+function heroSetup() {
+  const r = hero.el.getBoundingClientRect();
+  const w = Math.round(r.width) + PAD * 2, h = Math.round(r.height) + PAD * 2;
+  if (hero.clean && w === hero.w && Math.abs(h - hero.h) < 100) return;
+  hero.w = w; hero.h = h;
+  const kb = Math.min(DPR, 1.5, 2200 / w); hero.kb = kb;
+  const W = Math.round(w * kb), H = Math.round(h * kb);
+  hero.L = wordLayout(w, h);
+  const t = buildWall(W, H, kb, hero.L);
+  hero.clean = t.clean;
+  hero.work = makeCanvas(W, H); hero.wctx = hero.work.getContext('2d'); hero.wctx.drawImage(t.dirty, 0, 0);
+  hero.bg.width = W; hero.bg.height = H; hero.bctx = hero.bg.getContext('2d');
+  hero.spray.resize(w, h, Math.min(DPR, 1.5));
+  hero.r = hero.L.cap * .36;
+  if (!hero.intro || hero.done) { const ra = restAim(); hero.aim.x = ra.x; hero.aim.y = ra.y; }
+  if (hero.done || RM) heroCleanAll();
+  hero.last = null; hero.dirtyFrame = true;
+  heroCompose(); heroPlaceGun();
+}
+function heroStampSeg(a, b, alpha, ang) {
+  const kb = hero.kb, r = hero.r, d = Math.hypot(b.x - a.x, b.y - a.y), steps = Math.max(1, Math.ceil(d / (r * .18)));
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    stamp(hero.wctx, BRUSH, (lerp(a.x, b.x, t) + (Math.random() - .5) * r * .12) * kb, (lerp(a.y, b.y, t) + (Math.random() - .5) * r * .12) * kb, r * kb, ang, 1.3, 1, alpha);
+  }
+}
+function heroCleanAll() {
+  const pts = introPath(hero.L, hero.w);
+  for (let i = 1; i < pts.length; i++) heroStampSeg(pts[i - 1], pts[i], .9, .4);
+}
+function heroCompose() { const c = hero.bctx; if (!c) return; c.drawImage(hero.clean, 0, 0); c.drawImage(hero.work, 0, 0); }
+function heroPlaceGun() {
+  const T = clampAim(hero.aim), pose = gunPose(T);
+  hero.gun.style.transform = `translate3d(${pose.P.x.toFixed(1)}px,${pose.P.y.toFixed(1)}px,0) rotate(${pose.a.toFixed(4)}rad) scale(${pose.s.toFixed(4)}) translate(${-PIVX}px,${-PIVY}px)`;
+  return { T, pose };
+}
+function clampAim(p) { return { x: clamp(p.x, hero.w * .02, hero.w * .98), y: clamp(p.y, hero.h * .07, hero.h * .7) }; }
+
+function heroFrame(dt, now) {
+  if (!hero.clean) return;
+  if (hero.done && !RM) {
+    if (hero.ptr) {
+      const f = 1 - Math.pow(.002, dt);
+      hero.aim.x += (hero.ptr.x - hero.aim.x) * f; hero.aim.y += (hero.ptr.y - hero.aim.y) * f;
+    }
+    hero.firing = !!hero.ptr && now - hero.lastMove < 1700 && hero.scroll < .08;
+  }
+  if (hero.scroll > .1) hero.firing = false;
+  const want = hero.firing ? 1 : 0;
+  hero.power += (want - hero.power) * Math.min(1, dt * (want ? 10 : 5));
+  if (hero.firing) hero.reach = Math.min(1, hero.reach + dt * 7); else if (hero.power < .03) hero.reach = 0;
+
+  // pointer parallax on the whole scene
+  const p = hero.par; p.x += (p.tx - p.x) * Math.min(1, dt * 4); p.y += (p.ty - p.y) * Math.min(1, dt * 4);
+  hero.stage.style.transform = `translate3d(${p.x.toFixed(2)}px,${(p.y + hero.scroll * hero.h * .32).toFixed(2)}px,0)`;
+
+  const { T, pose } = heroPlaceGun();
+  if (hero.power > .4 && hero.reach > .95) {
+    if (hero.last) heroStampSeg(hero.last, T, .3 * hero.power, pose.a);
+    stamp(hero.wctx, BRUSH, T.x * hero.kb, T.y * hero.kb, hero.r * hero.kb, pose.a, 1.3, 1, .08 * hero.power);
+    hero.dirtyFrame = true;
+  }
+  hero.last = { x: T.x, y: T.y };
+  if (hero.dirtyFrame) { heroCompose(); hero.dirtyFrame = false; }
+
+  const S = hero.spray; S.update(dt);
+  if (hero.power > .02 || S.count) {
+    S.clear();
+    if (hero.power > .02) {
+      const E = { x: lerp(pose.N.x, T.x, hero.reach), y: lerp(pose.N.y, T.y, hero.reach) };
+      if (hero.reach > .95) S.emit(pose.N, E, hero.power, dt, { r: hero.r * .7, g: 1300 });
+      S.jet(pose.N, E, hero.power, 3.5 * pose.s, clamp(hero.L.cap * .12, 12, 40));
+    }
+    S.draw(); S.drawn = true;
+  } else if (S.drawn) { S.clear(); S.drawn = false; }
+
+  // HUD
+  hero.hud += ((hero.power > .05 ? 205 + Math.sin(now / 90) * 3 : 0) - hero.hud) * Math.min(1, dt * 6);
+  const v = Math.round(hero.hud);
+  if (v !== hero.hudShown) { hero.hudShown = v; hero.hudBar.textContent = String(v).padStart(3, '0'); hero.hudMeter.style.transform = `scaleX(${(v / 280).toFixed(3)})`; }
+}
+function heroPointer(e) {
+  const r = hero.el.getBoundingClientRect();
+  hero.ptr = { x: e.clientX - r.left + PAD - hero.par.x, y: e.clientY - r.top + PAD - hero.par.y - hero.scroll * hero.h * .32 };
+  hero.lastMove = performance.now();
+  if (FINE && !RM) { hero.par.tx = -((e.clientX - r.left) / r.width - .5) * 12; hero.par.ty = -((e.clientY - r.top) / r.height - .5) * 9; }
+}
+hero.el.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') heroPointer(e); });
+hero.el.addEventListener('pointerdown', e => { if (!e.target.closest('a')) heroPointer(e); });
+
+function heroIntro() {
+  const pts = introPath(hero.L, hero.w), rest = restAim();
+  hero.intro = true; hero.enter = 0; hero.aim.x = pts[0].x; hero.aim.y = pts[0].y;
+  const tl = gsap.timeline({ delay: .2 });
+  tl.from('.nav', { y: -24, opacity: 0, duration: .9, ease: 'power3.out' }, .2)
+    .to(hero, { enter: 1, duration: 1.5, ease: 'power3.out' }, 0)
+    .add(() => { hero.firing = true; }, 1.15);
+  let at = 1.3;
+  pts.slice(1).forEach(pt => { tl.to(hero.aim, { x: pt.x, y: pt.y, duration: pt.d, ease: 'sine.inOut' }, at); at += pt.d; });
+  tl.to(hero.aim, { x: rest.x, y: rest.y, duration: .9, ease: 'power2.inOut' }, at)
+    .add(() => { hero.firing = false; hero.done = true; }, at + .9)
+    .from('.hero h1 .ln > span', { yPercent: 112, duration: 1.15, ease: 'power4.out', stagger: .12 }, 1.55)
+    .from('.hero .sub', { y: 22, opacity: 0, duration: .8, ease: 'power3.out' }, 2.05)
+    .from('.hero .cta-row .btn', { y: 22, opacity: 0, duration: .8, ease: 'power3.out', stagger: .08 }, 2.15)
+    .from('.hud', { opacity: 0, x: 16, duration: .8, ease: 'power3.out' }, 1.0);
+}
+
+/* =====================================================================
+   CLEAN REVEAL — scroll drives the lance in rows across a driveway
+   ===================================================================== */
+const rv = {
+  stage: $('#rvStage'), surf: $('#rvSurface'), spray: new Spray($('#rvFx'), 520), bar: $('#rvBar'), hint: $('#rvHint'),
+  w: 0, h: 0, tk: 1, th: 30, k: 1.4, P: 1000, p: 0, maxP: 0, lastT: -1e9, power: 0, visible: false, path: null, dirtyFrame: true
+};
+const D2R = Math.PI / 180;
+function coverK(th, w, h, P) {
+  for (let k = 1; k < 3; k += .02) {
+    const z = k * (-h / 2) * Math.sin(th), f = P / (P - z);
+    if (k * (w / 2) * f >= w / 2 * 1.04 && k * (h / 2) * Math.cos(th) * f >= h / 2 * 1.04) return k;
+  }
+  return 3;
+}
+function rvProj(ex, ey) {
+  const u = ex - rv.w / 2, v = ey - rv.h / 2, th = rv.th * D2R, z = rv.k * v * Math.sin(th), f = rv.P / (rv.P - z);
+  return { x: rv.w / 2 + rv.k * u * f, y: rv.h / 2 + rv.k * v * Math.cos(th) * f, f: rv.k * f };
+}
+function rvSetup() {
+  const r = rv.stage.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
+  if (rv.clean && w === rv.w && Math.abs(h - rv.h) < 100) return;
+  rv.w = w; rv.h = h; rv.P = Math.max(w, h) * 1.15;
+  const tw = Math.round(Math.min(w * Math.min(DPR, 1.5), SMALL() ? 1000 : 1700)); rv.tk = tw / w;
+  const th = Math.round(h * rv.tk);
+  const u = clamp(w * .03, 20, 46) * rv.tk;
+  const t = buildPavers(tw, th, u, PAL.grey, 9, true);
+  rv.clean = t.clean; rv.work = makeCanvas(tw, th); rv.wctx = rv.work.getContext('2d'); rv.wctx.drawImage(t.dirty, 0, 0);
+  rv.surf.width = tw; rv.surf.height = th; rv.sctx = rv.surf.getContext('2d');
+  rv.spray.resize(w, h, Math.min(DPR, 1.5));
+  // boustrophedon rows, laid out in surface space using the mid-scroll camera
+  const thm = 26 * D2R, km = coverK(thm, w, h, rv.P), P = rv.P;
+  const invV = ys => ys * P / (km * (P * Math.cos(thm) + ys * Math.sin(thm)));
+  const invU = (xs, v) => xs * (P - km * v * Math.sin(thm)) / (km * P);
+  const n = SMALL() ? 4 : 5, vTop = invV(-h * .36), vBot = invV(h * .4), gap = (vBot - vTop) / (n - 1);
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const v = vTop + gap * i, a = { x: w / 2 + invU(-w * .52, v), y: h / 2 + v }, b = { x: w / 2 + invU(w * .52, v), y: h / 2 + v };
+    if (i % 2) pts.push(b, a); else pts.push(a, b);
+  }
+  let total = 0; const segs = [];
+  for (let i = 1; i < pts.length; i++) { const L = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y); segs.push({ a: pts[i - 1], b: pts[i], s: total, L }); total += L; }
+  rv.path = { segs, total }; rv.rad = gap * .66;
+  const mp = rv.maxP; rv.maxP = 0;
+  rvStampTo(mp);
+  rvApply(rv.p);
+}
+function rvAt(d) {
+  const { segs } = rv.path;
+  let s = segs[segs.length - 1];
+  for (const g of segs) if (d <= g.s + g.L) { s = g; break; }
+  const t = clamp((d - s.s) / (s.L || 1), 0, 1);
+  return { x: lerp(s.a.x, s.b.x, t), y: lerp(s.a.y, s.b.y, t), ang: Math.atan2(s.b.y - s.a.y, s.b.x - s.a.x) };
+}
+function rvStampTo(p) {
+  if (p <= rv.maxP) return;
+  const T = rv.path.total, step = rv.rad * .18, tk = rv.tk;
+  for (let d = rv.maxP * T; d <= p * T; d += step) {
+    const q = rvAt(d);
+    stamp(rv.wctx, BRUSH, (q.x + (Math.random() - .5) * rv.rad * .1) * tk, q.y * tk, rv.rad * tk, q.ang, .9, 1.18, .5);
+  }
+  rv.maxP = p; rv.dirtyFrame = true;
+}
+function rvApply(p) {
+  rv.p = p;
+  rv.th = RM ? 26 : lerp(34, 20, p);
+  rv.k = coverK(rv.th * D2R, rv.w, rv.h, rv.P);
+  rv.surf.style.transform = `perspective(${rv.P.toFixed(0)}px) rotateX(${rv.th.toFixed(2)}deg) scale(${rv.k.toFixed(3)})`;
+  rvStampTo(p);
+  if (rv.dirtyFrame) { rv.sctx.drawImage(rv.clean, 0, 0); rv.sctx.drawImage(rv.work, 0, 0); rv.dirtyFrame = false; }
+  rv.bar.style.transform = `scaleX(${p.toFixed(3)})`;
+  const done = p > .985;
+  if (done !== rv.doneState) { rv.doneState = done; rv.hint.textContent = done ? 'Schoon. Vergelijk hieronder zelf.' : 'Scroll verder en volg de straal over een oprit vol aanslag.'; }
+}
+function drawLance(x, N, B, f) {
+  const dx = B.x - N.x, dy = B.y - N.y, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, px = -uy, py = ux;
+  const quad = (a, b, wa, wb, fill) => {
+    x.fillStyle = fill; x.beginPath();
+    x.moveTo(a.x + px * wa, a.y + py * wa); x.lineTo(b.x + px * wb, b.y + py * wb); x.lineTo(b.x - px * wb, b.y - py * wb); x.lineTo(a.x - px * wa, a.y - py * wa); x.closePath(); x.fill();
+  };
+  const at = t => ({ x: N.x + dx * t, y: N.y + dy * t });
+  const wN = 3.4 * f, wB = 9;
+  const mid = at(.5), g = x.createLinearGradient(mid.x + px * wB, mid.y + py * wB, mid.x - px * wB, mid.y - py * wB);
+  g.addColorStop(0, '#202422'); g.addColorStop(.3, '#e8ebe5'); g.addColorStop(.5, '#9ca19b'); g.addColorStop(1, '#1b1e1c');
+  x.save();
+  x.globalAlpha = .35; x.fillStyle = '#000';
+  quad({ x: N.x + 26 * f, y: N.y + 18 * f }, { x: B.x + 70, y: B.y + 30 }, wN * 1.4, wB * 1.6, 'rgba(0,0,0,1)');
+  x.globalAlpha = 1;
+  quad(at(.04), B, wN, wB, g);
+  quad(at(.48), at(.64), wN * 2.4, wN * 2.4 + (wB - wN) * .3, '#111312');
+  const ng = x.createLinearGradient(N.x + px * wN * 2, N.y + py * wN * 2, N.x - px * wN * 2, N.y - py * wN * 2);
+  ng.addColorStop(0, '#f1ffa6'); ng.addColorStop(.4, '#cdf52a'); ng.addColorStop(1, '#566f05');
+  quad(N, at(.035), wN * 1.5, wN * 1.9, ng);
+  x.restore();
+}
+function rvFrame(dt, now) {
+  if (!rv.path) return;
+  const S = rv.spray, active = !RM && now - rv.lastT < 170 && rv.p > .002 && rv.p < .995;
+  rv.power += ((active ? 1 : 0) - rv.power) * Math.min(1, dt * (active ? 12 : 4));
+  S.update(dt); S.clear();
+  const q = rvAt(rv.p * rv.path.total), E = rvProj(q.x, q.y);
+  const B = { x: E.x * .35 + rv.w * .72, y: rv.h * 1.14 };
+  const dx = B.x - E.x, dy = B.y - E.y, L = Math.hypot(dx, dy), jl = 44 * E.f;
+  const N = { x: E.x + dx / L * jl, y: E.y + dy / L * jl };
+  const rs = rv.rad * E.f;
+  if (rv.power > .02) {
+    S.emit(N, E, rv.power, dt, { r: rs * .55, along: 160, splash: 420, mist: 22 });
+    S.jet(N, E, rv.power, 2.5, rs * .5);
+  }
+  S.draw();
+  drawLance(S.x, N, B, E.f);
+}
+
+/* =====================================================================
+   BEFORE / AFTER
+   ===================================================================== */
+const ba = { el: $('#ba'), range: $('#baRange'), after: $('.ba-after'), before: $('.ba-before'), w: 0, h: 0 };
+function baSetup() {
+  const r = ba.el.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
+  if (!w || (w === ba.w && h === ba.h)) return;
+  ba.w = w; ba.h = h;
+  const k = Math.min(DPR, 2), W = Math.round(w * k), H = Math.round(h * k);
+  const t = buildSurface('terras', W, H);
+  [[ba.after, t.clean], [ba.before, t.dirty]].forEach(([c, src]) => { c.width = W; c.height = H; c.getContext('2d').drawImage(src, 0, 0); });
+}
+function baSet(pct) {
+  pct = clamp(pct, 0, 100);
+  ba.el.style.setProperty('--x', pct + '%');
+  ba.range.value = Math.round(pct);
+  ba.range.setAttribute('aria-valuetext', `${Math.round(pct)}% van de voor-situatie zichtbaar`);
+}
+(() => {
+  let drag = false;
+  const at = e => { const r = ba.el.getBoundingClientRect(); baSet((e.clientX - r.left) / r.width * 100); };
+  ba.el.addEventListener('pointerdown', e => { if (e.target === ba.range) return; drag = true; ba.el.setPointerCapture(e.pointerId); at(e); });
+  ba.el.addEventListener('pointermove', e => { if (drag) at(e); });
+  ['pointerup', 'pointercancel'].forEach(t => ba.el.addEventListener(t, () => { drag = false; }));
+  ba.range.addEventListener('input', () => baSet(+ba.range.value));
+  baSet(50);
+})();
+
+/* =====================================================================
+   SERVICES — a cleaned band that widens like a passing jet
+   ===================================================================== */
+const svcs = $$('.svc-fig').map(fig => ({ fig, art: fig.closest('.svc'), c: fig.querySelector('canvas'), kind: fig.dataset.surface, b: .22, W: 0, H: 0 }));
+function svcSetup(S) {
+  const r = S.fig.getBoundingClientRect(), k = Math.min(DPR, 2), W = Math.round(r.width * k), H = Math.round(r.height * k);
+  if (!W || (W === S.W && H === S.H)) return;
+  S.W = W; S.H = H;
+  const t = buildSurface(S.kind, W, H);
+  S.clean = t.clean; S.dirty = t.dirty; S.tmp = makeCanvas(W, H);
+  S.c.width = W; S.c.height = H; svcRender(S);
+}
+function svcRender(S) {
+  if (!S.clean) return;
+  const { W, H } = S, x = S.c.getContext('2d'), t = S.tmp.getContext('2d');
+  x.drawImage(S.dirty, 0, 0);
+  t.globalCompositeOperation = 'source-over'; t.clearRect(0, 0, W, H); t.drawImage(S.clean, 0, 0);
+  const nl = Math.hypot(1, .55), nx = 1 / nl, ny = .55 / nl, L = Math.hypot(W, H) / 2, cx = W * .52, cy = H * .5;
+  const e = S.b < .5 ? 2 * S.b * S.b : 1 - Math.pow(-2 * S.b + 2, 2) / 2;
+  const hw = lerp(.06, .36, e), sf = .012;
+  const g = t.createLinearGradient(cx - nx * L, cy - ny * L, cx + nx * L, cy + ny * L);
+  const s0 = clamp(.5 - hw - sf, 0, 1), s1 = clamp(.5 - hw, s0, 1), s2 = clamp(.5 + hw, s1, 1), s3 = clamp(.5 + hw + sf, s2, 1);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(s0, 'rgba(0,0,0,0)'); g.addColorStop(s1, 'rgba(0,0,0,1)');
+  g.addColorStop(s2, 'rgba(0,0,0,1)'); g.addColorStop(s3, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  t.globalCompositeOperation = 'destination-in'; t.fillStyle = g; t.fillRect(0, 0, W, H);
+  x.drawImage(S.tmp, 0, 0);
+  // wet edge highlight along both band borders
+  x.save(); x.globalCompositeOperation = 'lighter';
+  [-1, 1].forEach(sgn => {
+    const o = (hw * 2 * L) * sgn, ex = cx + nx * o, ey = cy + ny * o;
+    const gg = x.createLinearGradient(ex - nx * 10, ey - ny * 10, ex + nx * 10, ey + ny * 10);
+    gg.addColorStop(0, 'rgba(200,225,240,0)'); gg.addColorStop(.5, 'rgba(200,225,240,.16)'); gg.addColorStop(1, 'rgba(200,225,240,0)');
+    x.fillStyle = gg; x.fillRect(0, 0, W, H);
+  });
+  x.restore();
+}
+function svcTo(S, b, dur) {
+  if (!HAS_GSAP || RM) { S.b = b; svcRender(S); return; }
+  gsap.to(S, { b, duration: dur, ease: 'power3.out', overwrite: true, onUpdate: () => svcRender(S) });
+}
+svcs.forEach(S => {
+  if (FINE) {
+    S.art.addEventListener('pointerenter', () => svcTo(S, 1, 1.1));
+    S.art.addEventListener('pointerleave', () => svcTo(S, .22, .9));
+  }
+});
+
+/* =====================================================================
+   FINALE — a water curtain washes the page into volt
+   ===================================================================== */
+const fin = { stage: $('#finStage'), volt: $('#finVolt'), spray: new Spray($('#finFx'), 520), t: RM || !HAS_GSAP ? 1 : 0, lastT: -1e9, w: 0, h: 0, visible: false, power: 0 };
+function finSetup() {
+  const r = fin.stage.getBoundingClientRect(), w = Math.round(r.width), h = Math.round(r.height);
+  if (w === fin.w && Math.abs(h - fin.h) < 100) return;
+  fin.w = w; fin.h = h;
+  fin.spray.resize(w, h, Math.min(DPR, 1.5));
+  if (!fin.bgDone) {
+    fin.bgDone = true;
+    const W = 960, H = Math.round(960 * Math.max(.5, Math.min(2, h / w)));
+    const t = buildWall(W, H, .7, null, 19);
+    const c = makeCanvas(W, H); c.getContext('2d').drawImage(t.dirty, 0, 0);
+    fin.stage.style.backgroundImage = `url(${c.toDataURL('image/jpeg', .82)})`;
+  }
+  finApply(fin.t);
+}
+const FIN_D = .32;
+function finApply(t) {
+  fin.t = t;
+  const x1 = t * (1 + FIN_D), x2 = x1 - FIN_D;
+  fin.volt.style.clipPath = t >= 1 ? 'none' : `polygon(0 0, ${(x1 * 100).toFixed(2)}% 0, ${(x2 * 100).toFixed(2)}% 100%, 0 100%)`;
+}
+function finFrame(dt, now) {
+  const S = fin.spray, moving = now - fin.lastT < 180 && fin.t > .002 && fin.t < .998;
+  fin.power += ((moving ? 1 : 0) - fin.power) * Math.min(1, dt * (moving ? 12 : 3));
+  S.update(dt); S.clear();
+  if (fin.t > .001 && fin.t < .999) {
+    const x1 = fin.t * (1 + FIN_D), x2 = x1 - FIN_D, A = { x: x1 * fin.w, y: -30 }, B = { x: x2 * fin.w, y: fin.h + 30 };
+    const ex = B.x - A.x, ey = B.y - A.y, el = Math.hypot(ex, ey), nx = ey / el, ny = -ex / el, R = Math.random;
+    const vis = .55 + .45 * fin.power;
+    S.jet(A, B, vis, 7, 9);
+    const n = Math.floor(900 * fin.power * dt + R());
+    for (let i = 0; i < n; i++) {
+      const f = R(), sp = 250 + R() * 1000;
+      S.spawn(A.x + ex * f, A.y + ey * f, nx * sp + (R() - .5) * 260, ny * sp + (R() - .5) * 260, .12 + R() * .35, .8 + R() * 1.6, R() < .1 ? 2 : 0, 600, 1.5, 0);
+    }
+    const m = Math.floor(40 * fin.power * dt + R());
+    for (let i = 0; i < m; i++) { const f = R(); S.spawn(A.x + ex * f + nx * 30, A.y + ey * f, nx * 120, -20, 1 + R(), 40 + R() * 50, 1, 0, .6, 70); }
+  }
+  S.draw();
+}
+
+/* =====================================================================
+   SCROLL, NAV, FAB, MAGNETIC BUTTONS
+   ===================================================================== */
+const nav = $('#nav'), fab = $('#fab');
+function onScroll() {
+  const y = scrollY, vh = innerHeight;
+  nav.classList.toggle('is-scrolled', y > 40);
+  const fr = fin.stage.getBoundingClientRect();
+  const onVolt = fin.t > .55 && fr.top < 60 && fr.bottom > 60;
+  nav.classList.toggle('on-volt', onVolt);
+  fab.classList.toggle('show', y > vh * .75 && fr.top > vh * .55);
+}
+addEventListener('scroll', onScroll, { passive: true });
+
+function initScroll() {
+  if (!HAS_GSAP || RM) {
+    rvApply(RM ? .55 : 1);
+    return;
+  }
+  ScrollTrigger.create({ trigger: hero.el, start: 'top top', end: 'bottom top', onUpdate: s => { hero.scroll = s.progress; } });
+  gsap.to('.hero-copy', { y: -90, opacity: 0, ease: 'none', scrollTrigger: { trigger: hero.el, start: 'top top', end: '55% top', scrub: true } });
+  gsap.to('.hud', { opacity: 0, ease: 'none', scrollTrigger: { trigger: hero.el, start: 'top top', end: '30% top', scrub: true } });
+
+  const rvp = { p: 0 };
+  gsap.to(rvp, {
+    p: 1, ease: 'none',
+    scrollTrigger: { trigger: '#resultaat', start: 'top top', end: () => '+=' + Math.round(innerHeight * (SMALL() ? 2.2 : 2.8)), pin: '#rvStage', scrub: .7, anticipatePin: 1 },
+    onUpdate: () => { rv.lastT = performance.now(); rvApply(rvp.p); }
+  });
+  gsap.from('.reveal-copy h2', { yPercent: 40, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#resultaat', start: 'top 70%' } });
+
+  gsap.from('.ba', { clipPath: 'inset(8% 6% 8% 6%)', duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: '.ba', start: 'top 85%' } });
+  ScrollTrigger.create({ trigger: '.ba', start: 'top 70%', once: true, onEnter: () => {
+    const o = { v: 18 }; gsap.to(o, { v: 50, duration: 1.4, ease: 'power3.inOut', onUpdate: () => baSet(o.v) });
+  } });
+
+  gsap.from('.svc-head h2', { yPercent: 30, opacity: 0, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.svc-head', start: 'top 82%' } });
+  svcs.forEach(S => {
+    gsap.from(S.fig, { clipPath: 'inset(14% 0% 14% 0%)', duration: 1.3, ease: 'power3.out', scrollTrigger: { trigger: S.fig, start: 'top 85%' } });
+    gsap.from(S.art.querySelector('.svc-title'), { yPercent: 26, opacity: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: S.fig, start: 'top 75%' } });
+    gsap.to(S.fig.querySelector('canvas'), { yPercent: -4, ease: 'none', scrollTrigger: { trigger: S.art, start: 'top bottom', end: 'bottom top', scrub: true } });
+    if (!FINE) ScrollTrigger.create({ trigger: S.fig, start: 'top 60%', once: true, onEnter: () => svcTo(S, .8, 1.4) });
+  });
+
+  const fp = { t: 0 };
+  const tl = gsap.timeline({ scrollTrigger: { trigger: '#contact', start: 'top top', end: () => '+=' + Math.round(innerHeight * 1.3), pin: '#finStage', scrub: .6, anticipatePin: 1 } });
+  tl.to(fp, { t: 1, duration: 1, ease: 'power1.inOut', onUpdate: () => { fin.lastT = performance.now(); finApply(fp.t); onScroll(); } }, 0)
+    .from('.finale-volt h2 .ln', { xPercent: -10, duration: .55, stagger: .08, ease: 'power2.out' }, .22)
+    .from(['.finale-volt .tagline', '.finale-volt .cta-row', '.phone-line'], { y: 30, opacity: 0, duration: .3, stagger: .05 }, .7)
+    .to({}, { duration: .25 });
+}
+
+function initMagnetic() {
+  if (!FINE || RM || !HAS_GSAP) return;
+  $$('[data-magnetic]').forEach(b => {
+    const qx = gsap.quickTo(b, 'x', { duration: .5, ease: 'power3.out' }), qy = gsap.quickTo(b, 'y', { duration: .5, ease: 'power3.out' });
+    b.addEventListener('pointermove', e => { const r = b.getBoundingClientRect(); qx(((e.clientX - r.left) / r.width - .5) * 10); qy(((e.clientY - r.top) / r.height - .5) * 8); });
+    b.addEventListener('pointerleave', () => { qx(0); qy(0); });
+  });
+}
+
+/* ---------- visibility + main loop ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.target === hero.el) hero.visible = e.isIntersecting;
+  if (e.target === rv.stage) rv.visible = e.isIntersecting;
+  if (e.target === fin.stage) fin.visible = e.isIntersecting;
+}));
+[hero.el, rv.stage, fin.stage].forEach(el => io.observe(el));
+
+const lazy = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  lazy.unobserve(e.target);
+  if (e.target === ba.el) baSetup();
+  const S = svcs.find(s => s.fig === e.target); if (S) svcSetup(S);
+}), { rootMargin: '150% 0px' });
+
+let last = performance.now();
+function tick(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  if (hero.visible) heroFrame(dt, now);
+  if (rv.visible) rvFrame(dt, now);
+  if (fin.visible) finFrame(dt, now);
+  requestAnimationFrame(tick);
+}
+
+let rT;
+addEventListener('resize', () => {
+  clearTimeout(rT);
+  rT = setTimeout(() => {
+    heroSetup(); rvSetup(); finSetup(); baSetup(); svcs.forEach(S => { if (S.clean) svcSetup(S); });
+    if (HAS_GSAP) ScrollTrigger.refresh();
+  }, 220);
+});
+
+async function boot() {
+  try { await Promise.race([document.fonts.load(`900 100px "Big Shoulders Display"`), new Promise(r => setTimeout(r, 2500))]); } catch (e) { /* fallback font */ }
+  if (RM || !HAS_GSAP) { hero.enter = 1; hero.done = true; }
+  heroSetup();
+  rvSetup();
+  finSetup();
+  initScroll();
+  initMagnetic();
+  lazy.observe(ba.el); svcs.forEach(S => lazy.observe(S.fig));
+  if (!RM && HAS_GSAP) heroIntro();
+  onScroll();
+  requestAnimationFrame(t => { last = t; tick(t); });
+  if (HAS_GSAP) setTimeout(() => ScrollTrigger.refresh(), 400);
+}
+boot();
+})();
+</script>
+</body>
+</html>
